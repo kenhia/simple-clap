@@ -7,11 +7,32 @@ use clap::Parser;
     about = "playing with clap",
 )]
 struct Opts {
-    #[clap(help="Device to query")]
+    #[clap(short, long, help = "verbose mode")]
+    verbose: bool,
+    #[clap(subcommand)]
+    cmd: Command,
+}
+
+#[derive(Parser)]
+enum Command {
+    #[command(name="info", about = "get info about a device")]
+    Info(InfoOpts),
+}
+
+#[derive(Parser)]
+struct InfoOpts {
+    #[clap(index = 1, help = "device to get info about")]
     device: String,
 }
 
 fn main() {
     let opts = Opts::parse();
-    println!("device: {}", opts.device);
+    match opts.cmd {
+        Command::Info(info) => {
+            if opts.verbose {
+                println!("Verbose mode enabled");
+            }
+            println!("Getting info about device: {}", info.device);
+        }
+    }
 }
