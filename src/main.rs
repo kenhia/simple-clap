@@ -1,38 +1,33 @@
-use clap::Parser;
+use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
-#[command(
-    version = "0.1.0",
-    author = "Ken Hiatt",
-    about = "playing with clap",
-)]
+#[command(version = "0.1.0", author = "Ken Hiatt", about = "playing with clap")]
 struct Opts {
     #[clap(short, long, help = "verbose mode")]
     verbose: bool,
     #[clap(subcommand)]
-    cmd: Command,
+    cmd: Commands,
 }
 
-#[derive(Parser)]
-enum Command {
-    #[command(name="info", about = "get info about a device")]
-    Info(InfoOpts),
-}
-
-#[derive(Parser)]
-struct InfoOpts {
-    #[clap(index = 1, help = "device to get info about")]
-    device: String,
+#[derive(Subcommand)]
+enum Commands {
+    /// Get info about a device
+    Info { device: String },
+    /// List devices
+    List,
 }
 
 fn main() {
     let opts = Opts::parse();
+    if opts.verbose {
+        println!("Verbose mode enabled");
+    }
     match opts.cmd {
-        Command::Info(info) => {
-            if opts.verbose {
-                println!("Verbose mode enabled");
-            }
-            println!("Getting info about device: {}", info.device);
+        Commands::Info { device } => {
+            println!("Getting info about device: {}", device);
+        }
+        Commands::List => {
+            println!("Listing devices");
         }
     }
 }
