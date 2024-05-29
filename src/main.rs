@@ -6,7 +6,7 @@ struct Opts {
     #[clap(short, long, help = "verbose mode (repeat for more)", action = ArgAction::Count)]
     verbose_level: u8,
 
-    #[clap(short, long, help = "Enable debug mode")]
+    #[clap(short, long, env="PLAY_DEBUG", help = "Enable debug mode")]
     debug: bool,
 
     #[clap(subcommand)]
