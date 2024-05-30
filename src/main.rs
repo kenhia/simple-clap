@@ -23,9 +23,27 @@ enum Commands {
 
 fn main() {
     let opts = Opts::parse();
+
+    let mut log_builder = env_logger::Builder::new();
+    log_builder.filter_level(match opts.verbose_level {
+        0 => log::LevelFilter::Off,
+        1 => log::LevelFilter::Warn,
+        2 => log::LevelFilter::Info,
+        3 => log::LevelFilter::Debug,
+        _ => log::LevelFilter::Trace,
+    });
+    log_builder.init();
+
     if opts.debug {
         println!("Debug mode enabled");
     }
+
+    log::trace!("trace message logging is enabled");
+    log::debug!("debug message logging is enabled");
+    log::info!("info message logging is enabled");
+    log::warn!("warn message logging is enabled");
+
+
     match opts.verbose_level {
         0 => println!("Verbose mode disabled"),
         1 => println!("Verbose mode enabled"),
