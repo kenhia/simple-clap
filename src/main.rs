@@ -26,9 +26,7 @@ enum Commands {
     List,
 }
 
-fn main() {
-    let opts = Opts::parse();
-
+fn initialize_logger(opts: &Opts) {
     let mut log_builder = env_logger::Builder::new();
     log_builder.filter_level(match opts.verbose_level {
         0 => log::LevelFilter::Off,
@@ -47,6 +45,11 @@ fn main() {
         log_builder.target(env_logger::Target::Pipe(Box::new(log_file)));
     }
     log_builder.init();
+}
+
+fn main() {
+    let opts = Opts::parse();
+    initialize_logger(&opts);
 
     if opts.debug {
         println!("Debug mode enabled");
