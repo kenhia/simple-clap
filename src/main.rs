@@ -8,10 +8,10 @@ struct Opts {
     #[clap(short, long, env="PLAY_VERBOSE", help = "verbose mode (repeat for more)", action = ArgAction::Count)]
     verbose_level: u8,
 
-    #[clap(long, help="Log to file")]
+    #[clap(long, help = "Log to file")]
     log_file: bool,
 
-    #[clap(short, long, env="PLAY_DEBUG", help = "Enable debug mode")]
+    #[clap(short, long, env = "PLAY_DEBUG", help = "Enable debug mode")]
     debug: bool,
 
     #[clap(subcommand)]
@@ -56,7 +56,6 @@ fn main() {
     log::debug!("debug message logging is enabled");
     log::info!("info message logging is enabled");
     log::warn!("warn message logging is enabled");
-
 
     match opts.verbose_level {
         0 => println!("Verbose mode disabled"),
