@@ -1,3 +1,5 @@
+use std::fs::OpenOptions;
+
 use clap::{ArgAction, Parser, Subcommand};
 
 #[derive(Parser)]
@@ -5,6 +7,9 @@ use clap::{ArgAction, Parser, Subcommand};
 struct Opts {
     #[clap(short, long, env="PLAY_VERBOSE", help = "verbose mode (repeat for more)", action = ArgAction::Count)]
     verbose_level: u8,
+
+    #[clap(long, help="Log to file")]
+    log_file: bool,
 
     #[clap(short, long, env="PLAY_DEBUG", help = "Enable debug mode")]
     debug: bool,
@@ -32,6 +37,15 @@ fn main() {
         3 => log::LevelFilter::Debug,
         _ => log::LevelFilter::Trace,
     });
+
+    if opts.log_file {
+        let log_file = OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open("play.log")
+            .expect("Failed to open log file");
+        log_builder.target(env_logger::Target::Pipe(Box::new(log_file)));
+    }
     log_builder.init();
 
     if opts.debug {
