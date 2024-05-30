@@ -3,7 +3,7 @@ use clap::{ArgAction, Parser, Subcommand};
 #[derive(Parser)]
 #[command(version = "0.1.0", author = "Ken Hiatt", about = "playing with clap")]
 struct Opts {
-    #[clap(short, long, help = "verbose mode (repeat for more)", action = ArgAction::Count)]
+    #[clap(short, long, env="PLAY_VERBOSE", help = "verbose mode (repeat for more)", action = ArgAction::Count)]
     verbose_level: u8,
 
     #[clap(short, long, env="PLAY_DEBUG", help = "Enable debug mode")]
